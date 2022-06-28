@@ -64,6 +64,10 @@ flags you would pass to `configure` if you were compiling manually).
     feature is enabled by default. By default, the system's libz is
     dynamically linked, but static linking of the version bundled with the
     [libz-sys] crate can be requested with the `libz-static` feature.
+  * The **`curl`** feature enables the HTTP client via curl. This
+    feature is enabled by default. By default, the system's curl is
+    dynamically linked, but static linking of the version bundled with the
+    [curl-sys] create can be requested with the `curl-static` feature.
   * The **`zstd`** feature enables support for ZSTD compression. By default,
     this builds and statically links the version bundled with the [zstd-sys]
     crate, but dynamic linking of the system's version can be requested with
@@ -82,6 +86,7 @@ process is defined in [`build.rs`].
 [CMake]: https://cmake.org
 [libz-sys]: https://crates.io/crates/libz-sys
 [lz4-sys]: https://crates.io/crates/lz4-sys
+[curl-sys]: https://crates.io/crates/curl-sys
 [mklove]: https://github.com/edenhill/mklove
 [openssl-sys]: https://crates.io/crates/openssl-sys
 [rdkafka]: https://docs.rs/rdkafka
