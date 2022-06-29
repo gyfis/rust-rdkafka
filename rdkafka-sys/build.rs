@@ -125,6 +125,16 @@ fn build_librdkafka() {
         configure_flags.push("--disable-zlib".into());
     }
 
+    if env::var("CARGO_FEATURE_CURL").is_ok() {
+        configure_flags.push("--enable-curl".into());
+        if let Ok(curl_root) = env::var("DEP_CURL_ROOT") {
+            cflags.push(format!("-I{}/include", curl_root));
+            ldflags.push(format!("-L{}/build", curl_root));
+        }
+    } else {
+        configure_flags.push("--disable-curl".into());
+    }
+
     if env::var("CARGO_FEATURE_ZSTD").is_ok() {
         configure_flags.push("--enable-zstd".into());
         if let Ok(zstd_root) = env::var("DEP_ZSTD_ROOT") {
@@ -206,6 +216,16 @@ fn build_librdkafka() {
         }
     } else {
         config.define("WITH_ZLIB", "0");
+    }
+
+    if env::var("CARGO_FEATURE_CURL").is_ok() {
+        config.define("WITH_CURL", "1");
+        config.register_dep("curl");
+        if let Ok(curl_root) = env::var("DEP_CURL_ROOT") {
+            env::set_var("CMAKE_LIBRARY_PATH", format!("{}/build", curl_root));
+        }
+    } else {
+        config.define("WITH_CURL", "0");
     }
 
     if env::var("CARGO_FEATURE_SSL").is_ok() {
