@@ -13,19 +13,12 @@ env:
 jobs:
 
   check:
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-        - os: windows-2019
-          features: cmake-build,libz-static,curl-static
-          rdkafka-sys-features: cmake-build,libz-static,curl-static
-    runs-on: ${{ matrix.os }}
+    runs-on: windows-2019
     steps:
     - uses: actions/checkout@v2
     - uses: actions-rs/toolchain@v1
       with:
         toolchain: ${{ env.rust_version }}
         default: true
-    - run: cargo build --all-targets --verbose --features "${{ matrix.features }}"
-    - run: cd rdkafka-sys && cargo test --features "${{ matrix.rdkafka-sys-features }}"
+    - run: cargo build --all-targets --verbose --features "cmake-build,libz-static,curl-static"
+    - run: cd rdkafka-sys && cargo test --features "cmake-build,libz-static,curl-static"
