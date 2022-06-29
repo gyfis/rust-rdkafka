@@ -126,7 +126,7 @@ fn build_librdkafka() {
     }
 
     if env::var("CARGO_FEATURE_CURL").is_ok() {
-        configure_flags.push("--enable-curl".into());
+        // There is no --enable-curl option, but it is enabled by default.
         if let Ok(curl_root) = env::var("DEP_CURL_ROOT") {
             cflags.push(format!("-I{}/include", curl_root));
             ldflags.push(format!("-L{}/build", curl_root));
