@@ -222,6 +222,7 @@ fn build_librdkafka() {
         config.define("WITH_CURL", "1");
         config.register_dep("curl");
         if let Ok(curl_root) = env::var("DEP_CURL_ROOT") {
+            config.define("CURL_STATICLIB", "1");
             env::set_var("CMAKE_LIBRARY_PATH", format!("{}/lib", curl_root));
         }
     } else {
