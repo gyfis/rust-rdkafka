@@ -129,7 +129,7 @@ fn build_librdkafka() {
         // There is no --enable-curl option, but it is enabled by default.
         if let Ok(curl_root) = env::var("DEP_CURL_ROOT") {
             cflags.push(format!("-I{}/include", curl_root));
-            ldflags.push(format!("-L{}/build", curl_root));
+            ldflags.push(format!("-L{}", curl_root));
         }
     } else {
         configure_flags.push("--disable-curl".into());
@@ -222,7 +222,7 @@ fn build_librdkafka() {
         config.define("WITH_CURL", "1");
         config.register_dep("curl");
         if let Ok(curl_root) = env::var("DEP_CURL_ROOT") {
-            env::set_var("CMAKE_LIBRARY_PATH", format!("{}/build", curl_root));
+            env::set_var("CMAKE_LIBRARY_PATH", format!("{}/include", curl_root));
         }
     } else {
         config.define("WITH_CURL", "0");
