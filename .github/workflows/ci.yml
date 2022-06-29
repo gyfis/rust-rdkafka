@@ -14,8 +14,8 @@ jobs:
 
   check:
     strategy:
+      fail-fast: false
       matrix:
-        fail-fast: false
         include:
         - os: macos-11.0
         - os: windows-2019
