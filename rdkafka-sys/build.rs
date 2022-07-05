@@ -222,6 +222,7 @@ fn build_librdkafka() {
         config.define("WITH_CURL", "1");
         config.register_dep("curl");
         if env::var("DEP_CURL_ROOT").is_ok() {
+            config.define("CURL_STATICLIB", "1");
             config.cflag("-DCURL_STATICLIB");
             config.cxxflag("-DCURL_STATICLIB");
         }
