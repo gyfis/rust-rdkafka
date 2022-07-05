@@ -197,6 +197,7 @@ fn build_librdkafka() {
 #[cfg(feature = "cmake-build")]
 fn build_librdkafka() {
     let mut config = cmake::Config::new("librdkafka");
+    let mut cmake_library_paths = vec![];
 
     config
         .define("RDKAFKA_BUILD_STATIC", "1")
@@ -212,7 +213,7 @@ fn build_librdkafka() {
         config.define("WITH_ZLIB", "1");
         config.register_dep("z");
         if let Ok(z_root) = env::var("DEP_Z_ROOT") {
-            env::set_var("CMAKE_LIBRARY_PATH", format!("{}/build", z_root));
+            cmake_library_paths.push(format!("{}/build", z_root));
         }
     } else {
         config.define("WITH_ZLIB", "0");
@@ -225,7 +226,7 @@ fn build_librdkafka() {
             println!("[DEBUG] Curl root: {:?}", curl_root);
 
             config.define("CURL_STATICLIB", "1");
-            env::set_var("CMAKE_LIBRARY_PATH", format!("{}/lib", curl_root));
+            cmake_library_paths.push(format!("{}/lib", curl_root));
             config.cflag(format!("-I{}/include", curl_root));
             config.cxxflag(format!("-I{}/include", curl_root));
         }
@@ -269,6 +270,10 @@ fn build_librdkafka() {
 
     if let Ok(system_name) = env::var("CMAKE_SYSTEM_NAME") {
         config.define("CMAKE_SYSTEM_NAME", system_name);
+    }
+
+    if !cmake_library_paths.is_empty() {
+        env::set_var("CMAKE_LIBRARY_PATH", cmake_library_paths.join(";"));
     }
 
     println!("Configuring and compiling librdkafka");
