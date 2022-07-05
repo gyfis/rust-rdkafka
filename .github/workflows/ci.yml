@@ -20,4 +20,5 @@ jobs:
       with:
         toolchain: ${{ env.rust_version }}
         default: true
+    - run: cargo build --all-targets --verbose --features "cmake-build,libz-static,curl-static"
     - run: cd rdkafka-sys && cargo test --features "cmake-build,libz-static,curl-static"
