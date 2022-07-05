@@ -222,7 +222,7 @@ fn build_librdkafka() {
     if env::var("CARGO_FEATURE_CURL").is_ok() {
         config.define("WITH_CURL", "1");
         config.register_dep("curl");
-        if env::var("DEP_CURL_ROOT").is_ok() {
+        if let Ok(curl_root) = env::var("DEP_CURL_ROOT") {
             config.define("CURL_STATICLIB", "1");
             cmake_library_paths.push(format!("{}/lib", curl_root));
             config.cflag("-DCURL_STATICLIB");
